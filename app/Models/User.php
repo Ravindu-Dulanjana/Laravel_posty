@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Psy\TabCompletion\Matcher\FunctionsMatcher;
 
 class User extends Authenticatable
 {
@@ -47,5 +48,9 @@ class User extends Authenticatable
 
         return $this->hasMany(Post::class);
 
+    }
+
+    public function likes(){
+        return $this->hasMany(Like::class);
     }
 }

@@ -11,7 +11,7 @@ class PostController extends Controller
     public function index(){
 
         //laravel collection (get all posts)
-        $posts = Post::paginate(2); 
+        $posts = Post::orderBy('created_at','desc')->with(['user','likes',])->paginate(2); 
 
         return view('posts.index', [
             'posts' => $posts
@@ -31,5 +31,13 @@ class PostController extends Controller
 
         return back();
         
+    }
+
+    public function destroy(Post $post){
+
+        $this->authorize('delete',$post);
+
+        $post->delete();
+        return back();
     }
 }

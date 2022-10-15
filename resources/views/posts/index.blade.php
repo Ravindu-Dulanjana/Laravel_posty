@@ -30,6 +30,34 @@
                             class="text-gray-600 text-sm">{{ $post->created_at->diffForhumans() }}</span>
 
                         <p class="mb-2">{{ $post->body }}</p>
+
+                        @can('delete', $post)
+                            <form action="{{ route('posts.delete', $post) }}" method="post" class="mr-1 mb-0">
+                                @csrf
+                                @method('DELETE')
+                                <button class="text-red-600" type="submit">Delete</button>
+                            </form>
+                        @endcan
+
+
+
+                        <div class="flex ">
+                            @auth
+                                @if (!$post->likedBy(auth()->user()))
+                                    <form action="{{ route('posts.likes', $post) }}" method="post" class="mr-1  ">
+                                        @csrf
+                                        <button class="text-blue-500 " type="submit">Like</button>
+                                    </form>
+                                @endif
+
+                                <form action="{{ route('posts.likes', $post) }}" method="post" class="mr-1">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="text-blue-500" type="submit">Unlike</button>
+                                </form>
+                            @endauth
+                            <span>{{ $post->likes->count() }} {{ Str::plural('like', $post->likes->count()) }}</span>
+                        </div>
                     </div>
                 @endforeach
 
